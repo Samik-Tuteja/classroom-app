@@ -231,7 +231,8 @@ router.get("/:id/students", async (req, res) => {
 });
 
 router.get("/:id/createassignment", async (req, res) => {
-  const user = await User.find({ user: req.user.name });f
+  const user = await User.find({ user: req.user.name });
+  f;
   const createdclass = await Createclass.findById(req.params.id);
   res.render("classroom/createassignment", {
     createdclass: createdclass,
@@ -416,6 +417,7 @@ router.get("/:id/student-records", async (req, res) => {
   const joinedclass = await Joiningclass.find({ classcode: req.params.id });
   res.render("classroom/studentrecordlist", {
     joinedclass: joinedclass,
+    user: user,
   });
 });
 
