@@ -1,0 +1,37 @@
+<%- include ("./partials/messages"); %>
+
+<form action="/users/login" method="POST">
+  <div>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" placeholder="Email" />
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="Password"
+    />
+    <a class="button-unhide" style="cursor: pointer">Unhide</a>
+  </div>
+
+  <div>
+    <button type="submit">Login</button>
+  </div>
+
+  <a href="/users/register">Register</a>
+</form>
+<script>
+  const hideBtn = document.querySelector(".button-unhide");
+  const password = document.querySelector("#password");
+  let counter = 0;
+  hideBtn.addEventListener("click", function (e) {
+    counter++;
+    if (counter % 2 != 0) {
+      password.type = "text";
+    } else if (counter % 2 == 0) {
+      password.type = "password";
+    }
+  });
+</script>

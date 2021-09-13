@@ -1,0 +1,34 @@
+<a href="/logout">Logout</a>
+<h1><%= data.user.name %></h1>
+<h1><%= data.user.person %></h1>
+<% if(data.user.person == "teacher"){ %>
+<a href="/classroom/createclass">Create class</a>
+<div style="border: 1px solid black; padding-left: 1rem">
+  <% teacherdata.forEach(function(teacherdata){ %>
+  <p>Class name: <%= teacherdata.classname %></p>
+  <p>Teacher name: <%= teacherdata.teachername %></p>
+  <p>Class code: <%= teacherdata.id %></p>
+  <p><%= teacherdata.classn %> - <%= teacherdata.section %></p>
+  <a href="/classroom/<%= teacherdata.id %>">Class link</a>
+  <br />
+  <br />
+  <br />
+  <% }) %>
+</div>
+<% } %> <% if(data.user.person == "student"){ %>
+<a href="/classroom/joinclass">Join class</a>
+<a href="/classroom/joinallclasses">Join all classes</a>
+<div style="border: 1px solid black; padding-left: 1rem">
+  <% studentdata.forEach(function(studentdata){ %>
+  <p>Class name: <%= studentdata.classname %></p>
+  <p>Teacher name: <%= studentdata.teachername %></p>
+  <p class="copy-text">Class code: <%= studentdata.classcode %></p>
+  <p><%= studentdata.classn %> - <%= studentdata.section %></p>
+  <a href="/classroom/<%= studentdata.classcode %>">Class link</a>
+  <br />
+  <br />
+  <br />
+  <% }) %>
+</div>
+<% } %>
+

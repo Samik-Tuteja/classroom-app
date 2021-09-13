@@ -1,0 +1,22 @@
+<% if(user[0].person === "teacher"){ %>
+<form action="/classroom/teachermsg2" method="POST">
+  <input
+    type="text"
+    name="messagename"
+    id="messagename"
+    placeholder="messagename"
+  />
+  <input type="text" name="message" id="message" placeholder="message" />
+  <input
+    type="text"
+    name="classcode"
+    id="classcode"
+    style="display: none"
+    value="<%= typeof createclass.id != 'undefined' ? createclass.id : '' %>"
+  />
+  <input type="submit" value="Post" />
+</form>
+
+<% }else if(user[0].person === "student"){ %>
+<h1>Error! Could not find page</h1>
+<% } %>

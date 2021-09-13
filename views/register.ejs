@@ -1,0 +1,84 @@
+<%- include ("./partials/messages"); %>
+
+<form action="/users/register" method="POST">
+  <div>
+    <input
+      type="text"
+      name="name"
+      id="name"
+      placeholder="Name"
+      value="<%= typeof name != 'undefined' ? name : '' %>"
+    />
+  </div>
+  <div>
+    <input
+      type="email"
+      name="email"
+      id="email"
+      placeholder="email"
+      value="<%= typeof email != 'undefined' ? email : '' %>"
+    />
+  </div>
+
+  <div>
+    <select name="person" id="person">
+      <option value="role">Role</option>
+      <option value="teacher">Teacher</option>
+      <option value="student">Student</option>
+    </select>
+  </div>
+
+  <div>
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="password"
+      value="<%= typeof password!= 'undefined' ? password : '' %>"
+    />
+    <a class="button-unhide" style="cursor: pointer">Unhide</a>
+  </div>
+  <div>
+    <input
+      type="password"
+      name="password2"
+      id="password2"
+      placeholder="confirm-password"
+      value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
+    />
+    <a class="button-unhide2" style="cursor: pointer">Unhide</a>
+  </div>
+  <div>
+    <button type="submit">Register</button>
+  </div>
+
+  <a href="/users/login">Login</a>
+</form>
+
+<script>
+  const hideBtn = document.querySelector(".button-unhide");
+  const hideBtn2 = document.querySelector(".button-unhide2");
+  const password = document.querySelector("#password");
+  const password2 = document.querySelector("#password2");
+  let counter = 0;
+  hideBtn.addEventListener("click", function (e) {
+    counter++;
+    if (counter % 2 != 0) {
+      password.type = "text";
+    } else if (counter % 2 == 0) {
+      password.type = "password";
+    }
+  });
+
+  let counter2 = 0;
+
+  hideBtn2.addEventListener("click", function (e) {
+    counter2++;
+    if (counter2 % 2 != 0) {
+      password2.type = "text";
+    } else if (counter % 2 == 0) {
+      password2.type = "password";
+    }
+    console.log(counter2);
+  });
+</script>

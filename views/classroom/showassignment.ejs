@@ -1,0 +1,106 @@
+<% if(user[0].person === "teacher"){ %>
+<div>
+  <a href="/classroom">Back</a>
+  <h1>Due Date: <%= teachermsgs[0].duedate %></h1>
+  <% var array2 = [] %> <% turnin.forEach(function(turnin){ %> <%
+  array2.push(turnin.studentname) %>
+  <div style="border: 1px solid black">
+    <p><%= turnin.studentname %></p>
+    <embed src="<%= turnin.file %>" width="300px" height="300px" />
+    <a href="<%= turnin.file %>" target="_blank">Open in new tab</a>
+    <form action="/classroom/showassignmentpost" method="POST">
+      <label for="marks">Return marks</label>
+      <input
+        type="number"
+        name="returnedmarks"
+        id="returnedmarks"
+        max="<%= typeof teachermsgs[0].marks != 'undefined' ? teachermsgs[0].marks : '' %>"
+        min="0"
+      />
+      <input
+        type="text"
+        name="classcode"
+        id="classcode"
+        style="display: none"
+        value="<%= typeof turnin.classcode != 'undefined' ? turnin.classcode : '' %>"
+      />
+      <input
+        type="text"
+        name="assignmentcode"
+        id="assignmentcode"
+        style="display: none"
+        value="<%= typeof turnin.assignmentcode != 'undefined' ? turnin.assignmentcode : '' %>"
+      />
+      <input
+        type="text"
+        name="studentname"
+        id="studentname"
+        style="display: none"
+        value="<%= typeof turnin.studentname != 'undefined' ? turnin.studentname : '' %>"
+      />
+      <input type="submit" value="Submit" />
+    </form>
+    <p>Status: <%= turnin.status %></p>
+    <% if(turnin.returnedmarks !== "") { %>
+    <p>Returnedmarks <%= turnin.returnedmarks %></p>
+
+    <% } %>
+  </div>
+
+  <% }) %>
+
+  <div>
+    <% var array = [] %> <% joinedclass.forEach(function(joinedclass){ %> <%
+    array.push(joinedclass.studentname) %> <% }) %> <% array =
+    array.filter((item) => !array2.includes(item)); %> <%
+    array.forEach(function(array){ %>
+    <div style="border: 1px solid black">
+      <p><%= array %></p>
+      <p class="checkturnin"></p>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+<% }else if(user[0].person === "student"){ %>
+<h1>error! page not found</h1>
+<% } %>
+
+<p class="duedate-data" style="display: none"><%= teachermsgs[0].duedate %></p>
+
+<script>
+  var dateInPast = function (firstDate, secondDate) {
+    if (firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)) {
+      return true;
+    }
+
+    return false;
+  };
+  const dhudate = document.querySelector(".duedate-data").textContent;
+
+  const date = new Date();
+  currentYear = date.getFullYear();
+  currentMonth = date.getMonth() + 1;
+  currentDay = date.getDate();
+  currentMonth = ("0" + currentMonth).slice(-2);
+  currentDay = ("0" + currentDay).slice(-2);
+
+  const todayDate = currentYear + "-" + currentMonth + "-" + currentDay;
+  var past = new Date(dhudate);
+  var today = new Date();
+  dateInPast(past, today);
+
+  dateInPastArrow = (firstDate, secondDate) =>
+    firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0);
+  document.querySelectorAll(".checkturnin").forEach((element) => {
+    const checkturnin = element;
+
+    if (todayDate === dhudate) {
+      checkturnin.textContent = "Due today";
+    } else if (dateInPastArrow(past, today) === false) {
+      checkturnin.textContent = "Assigned";
+    } else if (dateInPastArrow(past, today) === true) {
+      checkturnin.textContent = "Missing";
+    }
+  });
+</script>

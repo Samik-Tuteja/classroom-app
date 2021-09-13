@@ -1,0 +1,80 @@
+<% if(user[0].person === "teacher"){ %>
+
+<form action="/classroom/postassignment" method="POST">
+  <input
+    type="text"
+    name="messagename"
+    id="messagename"
+    placeholder="messagename"
+  />
+  <input type="text" name="message" id="message" placeholder="message" />
+  <input style="display: none" type="text" name="file" id="file" value="" />
+  <br />
+  <iframe src="" width="400px" height="400px" id="uparwalaembed"></iframe>
+  <input type="date" name="duedate" id="duedate" />
+  <input type="number" name="marks" id="marks" placeholder="marks" />
+  <input type="submit" value="Post" />
+  <input
+    style="display: none"
+    type="text"
+    name="teachername"
+    id="teachername"
+    value="<%= typeof createdclass.teachername != 'undefined' ? createdclass.teachername : '' %>"
+  />
+  <input
+    style="display: none"
+    type="text"
+    name="id"
+    id="id"
+    value="<%= typeof createdclass.id != 'undefined' ? createdclass.id : '' %>"
+  />
+</form>
+
+<input type="file" name="file" id="file" onchange="readFile(this)" />
+
+<% }else if(user[0].person === "student"){ %>
+  <h1>Error! could not find page</h1>
+  <% } %>
+
+<script>
+  function readFile(file) {
+    const reader = new FileReader();
+    file = file.files[0];
+    console.log(file);
+    reader.onload = (e) => {
+      console.log(e.target.result);
+      document.querySelector("#uparwalaembed").src = e.target.result;
+      document.querySelector("#file").value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // --------------------------
+  const duedate = document.querySelector("#duedate");
+
+  const dateInPast = function (firstDate, secondDate) {
+    if (firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const past = new Date("2021-09-01");
+  const today = new Date();
+  const future = new Date("2030-05-20");
+  dateInPast(past, today);
+  dateInPast(future, today);
+  dateInPastArrow = (firstDate, secondDate) =>
+    firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0);
+  if (dateInPastArrow(past, today) === true) {
+    console.log("It is in the past");
+  } else if (today === past) {
+    console.log("Due today");
+  } else if (dateInPastArrow(future, today) === false) {
+    console.log("It is in the futur");
+  }
+
+  console.log(today);
+  console.log(past);
+</script>

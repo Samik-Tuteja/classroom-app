@@ -1,0 +1,164 @@
+<h1><%= teachermsgs[0].messagename %></h1>
+<p><%= teachermsgs[0].teachername %></p>
+<br />
+<p>Posted: <%= teachermsgs[0].date %></p>
+<br />
+<p><%= teachermsgs[0].marks %> points</p>
+<br />
+<br />
+<p>Message: <%= teachermsgs[0].message %></p>
+<br />
+<br />
+<br />
+<% if(teachermsgs.file !== ""){ %>
+<embed src="<%= teachermsgs[0].file %>" width="300px" height="300px" />
+<a href="<%= teachermsgs[0].file %>" target="_blank">Open in tab</a>
+<% } %>
+
+<p>Due Date: <%= teachermsgs[0].duedate %></p>
+
+<% if(user[0].person === "student" && turnin.length === 1 &&
+turnin[0].returnedmarks !== ""){ %>
+<p>Returnedmarks: <%= turnin[0].returnedmarks %></p>
+<% } %><% if(turnin.length === 0 && user[0].person === "student") { %>
+<p class="checkturnin"></p>
+<% } else if(turnin.length === 1 && user[0].person === "student") { %>
+<p><%= turnin[0].status %></p>
+<% } %> <% if(user[0].person === "student"){ %> <% if(turnin.length === 0) { %>
+
+<h1>Upload kardo friends</h1>
+
+<form action="/classroom/assignmentturnin" method="POST">
+  <input style="display: none" type="text" name="file" id="fil" value="" />
+  <br />
+  <iframe src="" width="400px" height="400px" id="uprwalaembed"></iframe>
+  <input
+    type="text"
+    name="classid"
+    id="classid"
+    value="<%= typeof teachermsgs[0].classcode != 'undefined' ? teachermsgs[0].classcode : '' %>"
+    style="display: none"
+  />
+  <input
+    type="text"
+    name="assignmentid"
+    id="classid"
+    value="<%= typeof teachermsgs[0].id != 'undefined' ? teachermsgs[0].id : '' %>"
+    style="display: none"
+  />
+  <input
+    type="text"
+    name="teachername"
+    id="teachername"
+    value="<%= typeof teachermsgs[0].teachername != 'undefined' ? teachermsgs[0].teachername : '' %>"
+    style="display: none"
+  />
+  <input
+    type="text"
+    name="dhudate"
+    id="dhudate"
+    style="display: none"
+    value="<%= typeof teachermsgs[0].duedate != 'undefined' ? teachermsgs[0].duedate : '' %>"
+    style="display: none"
+  />
+  <input
+    type="text"
+    name="marks"
+    id="marks"
+    style="display: none"
+    value="<%= typeof teachermsgs[0].marks != 'undefined' ? teachermsgs[0].marks: '' %>"
+    style="display: none"
+  />
+  <input
+    type="text"
+    name="messagename"
+    id="messagename"
+    style="display: none"
+    value="<%= typeof teachermsgs[0].messagename != 'undefined' ? teachermsgs[0].messagename: '' %>"
+    style="display: none"
+  />
+  <input type="submit" value="Turn in" />
+</form>
+
+<input type="file" name="file" id="fil" onchange="readsFile(this)" />
+
+<% }else if(turnin.length !== 0) { %>
+
+<embed src="<%= turnin[0].file %>" width="300px" height="300px" />
+<a href="<%= turnin[0].file %>" target="_blank">Open in tab</a>
+<% } %> <% } %> <% if(user[0].person === "teacher"){ %>
+<a
+  href="/classroom/<%= teachermsgs[0].classcode %>/assignment/<%= teachermsgs[0].id %>/show"
+  >Show Turnins</a
+>
+<% } %>
+
+<p class="duedate-data" style="display: none"><%= teachermsgs[0].duedate %></p>
+<script>
+  function readFile(file) {
+    const reader = new FileReader();
+    file = file.files[0];
+    reader.onload = (e) => {
+      document.querySelector("#uparwalaembed").src = e.target.result;
+      document.querySelector("#file").value = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function readsFile(file) {
+    const reader = new FileReader();
+    file = file.files[0];
+    reader.onload = (e) => {
+      document.querySelector("#uprwalaembed").src = e.target.result;
+      document.querySelector("#fil").value = e.target.result;
+      console.log(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+  // ---------------------
+
+  const checkturnin = document.querySelector(".checkturnin");
+
+  var dateInPast = function (firstDate, secondDate) {
+    if (firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const dhudate = document.querySelector(".duedate-data").textContent;
+
+  var dateInPast = function (firstDate, secondDate) {
+    if (firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0)) {
+      return true;
+    }
+
+    return false;
+  };
+
+  const date = new Date();
+  currentYear = date.getFullYear();
+  currentMonth = date.getMonth() + 1;
+  currentDay = date.getDate();
+  currentMonth = ("0" + currentMonth).slice(-2);
+  currentDay = ("0" + currentDay).slice(-2);
+
+  const todayDate = currentYear + "-" + currentMonth + "-" + currentDay;
+
+  var past = new Date(dhudate);
+  var today = new Date();
+  dateInPast(past, today);
+
+  dateInPastArrow = (firstDate, secondDate) =>
+    firstDate.setHours(0, 0, 0, 0) <= secondDate.setHours(0, 0, 0, 0);
+  if (checkturnin) {
+    if (todayDate === dhudate) {
+      checkturnin.textContent = "Due today";
+    } else if (dateInPastArrow(past, today) === false) {
+      checkturnin.textContent = "Assigned";
+    } else if (dateInPastArrow(past, today) === true) {
+      checkturnin.textContent = "Missing";
+    }
+  }
+</script>

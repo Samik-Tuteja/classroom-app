@@ -1,0 +1,51 @@
+<% if(user[0].person === "teacher"){ %>
+<p>Total Assignments: <%= teachermsgs.length %></p>
+<p>Assignments Submitted: <%= turnin.length %></p>
+<h1>Assignment marks</h1>
+
+<% turnin.forEach(function(turnin){ %>
+<p>
+  <%= turnin.messagename %>: <%= turnin.returnedmarks %>/ <%= turnin.marks %>
+</p>
+<% }) %>
+<h1>Overall record</h1>
+<% turnin.forEach(function(turnin){ %>
+<p style="display: none" class="dataOp"><%= turnin.returnedmarks %></p>
+<p style="display: none" class="dataOp2"><%= turnin.marks %></p>
+<% }) %>
+<span>Total Marks Obatined: </span>
+<span class="total-marks"></span>
+<br />
+<span>Total Marks: </span>
+<span class="total-marks2"></span>
+<br />
+<br />
+<span>Total Percentage:</span>
+<span class="total"></span>
+<% }else if(user[0].person === "student"){ %>
+<h1>Oops! could not find page</h1>
+<% } %>
+
+<script>
+  const array = [];
+  const totalMarks = document.querySelector(".total-marks");
+  var sum = 0;
+  document.querySelectorAll(".dataOp").forEach((element) => {
+    sum += parseInt(element.textContent);
+  });
+  totalMarks.textContent = sum;
+
+  const array2 = [];
+  const totalMarks2 = document.querySelector(".total-marks2");
+  var sum2 = 0;
+  document.querySelectorAll(".dataOp2").forEach((element) => {
+    sum2 += parseInt(element.textContent);
+  });
+  totalMarks2.textContent = sum2;
+
+  const total = document.querySelector(".total");
+  const percent = (sum / sum2) * 100;
+  const percentFinal = percent.toFixed(2);
+  console.log(percentFinal);
+  total.textContent = percentFinal + "%";
+</script>

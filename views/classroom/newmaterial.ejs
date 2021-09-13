@@ -1,0 +1,41 @@
+<% if(user[0].person === "teacher") { %>
+<form action="/classroom/teachermsg" method="POST">
+  <input type="text" name="messagename" id="messagename" placeholder="messagename">
+    <input type="text" name="message" id="message" placeholder="message" />
+    <input
+      type="text"
+      name="classcode"
+      id="classcode"
+      style="display: none"
+      value="<%= typeof createclass.id != 'undefined' ? createclass.id : '' %>"
+    />
+    <input type="submit" value="Post" />
+    <input style="display: none" type="text" name="file" id="file" value="" /> <br>
+    <embed src="" width="400px" height="400px" id="uparwalaembed"></embed>
+  </form>
+  
+  <input
+    type="file"
+    name="file"
+    id="file"
+    onchange="readFile(this)"
+  />
+
+  <% }else if(user[0].person === "student"){ %>
+    <h1>Error! Could not find page</h1>
+    <% } %>
+
+  <script>
+    function readFile(file) {
+      const reader = new FileReader();
+      file = file.files[0];
+      console.log(file);
+      reader.onload = (e) => {
+          console.log('gabs');
+        document.querySelector("#uparwalaembed").src = e.target.result;
+        document.querySelector("#file").value = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+  

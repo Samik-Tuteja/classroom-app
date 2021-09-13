@@ -1,0 +1,13 @@
+<% if(user[0].person === "teacher"){ %>
+<h1>Student List</h1>
+<% joinedclass.forEach(function(joinedclass){ %>
+<a
+  href="/classroom/<%= joinedclass.classcode %>/student-records/<%= joinedclass.studentname %>"
+  ><%= joinedclass.studentname %></a
+>
+<br />
+<% }) %>
+
+<% }else if(user[0].person === "student"){ %>
+  <h1>Oop!! Could not find this page</h1>
+  <% } %>
